@@ -76,7 +76,8 @@ class LoginController extends GetxController {
       User user = userCredential.user!;
 
       Get.offAllNamed(Routes.HOME);
-
+      otpController.clear();
+      phoneController.clear();
       print('User signed in: ${user.uid}');
     } catch (e) {
       print('Error verifying OTP: $e');
@@ -87,6 +88,16 @@ class LoginController extends GetxController {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
+    }
+  }
+
+  void logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+
+      Get.offAllNamed(Routes.LOGIN);
+    } catch (e) {
+      print('Error signing out: $e');
     }
   }
 }

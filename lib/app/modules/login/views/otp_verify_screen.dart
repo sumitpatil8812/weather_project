@@ -16,7 +16,7 @@ class OtpVerifyView extends GetView<LoginController> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Otp Screen"),
+          title: const Text("Otp Screen"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -44,42 +44,40 @@ class OtpVerifyView extends GetView<LoginController> {
                     }
                   },
                   decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
                       hintText: "Enter Otp here",
-                      prefixIcon: Icon(Icons.lock_outline),
+                      prefixIcon: const Icon(Icons.lock_outline),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30)),
                       focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: const BorderSide(color: Colors.red)),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ),
                 addVerticalSpace(20),
-                Obx(
-                  () => SizedBox(
-                    height: Get.height * 0.06,
-                    width: Get.width * 0.9,
-                    child: ElevatedButton(
-                        style: const ButtonStyle(
-                            foregroundColor:
-                                MaterialStatePropertyAll(Colors.white),
-                            backgroundColor: MaterialStatePropertyAll(
-                                AppColors.firstGradientColor)),
-                        onPressed: () {
-                          if (controller.otpFormKey.currentState?.validate() ??
-                              false) {
-                            controller.verifyOTP();
-                          }
-                        },
-                        child: Text(
-                          "Submit",
-                        )),
-                  ),
-                )
+                SizedBox(
+                  height: Get.height * 0.06,
+                  width: Get.width * 0.9,
+                  child: ElevatedButton(
+                      style: const ButtonStyle(
+                          foregroundColor:
+                              MaterialStatePropertyAll(Colors.white),
+                          backgroundColor: MaterialStatePropertyAll(
+                              AppColors.firstGradientColor)),
+                      onPressed: () {
+                        if (controller.otpFormKey.currentState?.validate() ??
+                            false) {
+                          controller.verifyOTP();
+                        }
+                      },
+                      child: const Text(
+                        "Submit",
+                      )),
+                ),
               ],
             ),
           ),

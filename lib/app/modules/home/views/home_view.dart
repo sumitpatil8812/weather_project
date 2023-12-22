@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:weather_app/app/utils/app_colors.dart';
@@ -15,47 +16,77 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Obx(() => controller.checkLoading().isTrue
-            ? Center(
-                child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/icons/clouds.png",
-                    height: height(context) * 0.08,
-                  ),
-                  const CircularProgressIndicator()
-                ],
-              ))
-            : ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  addVerticalSpace(20),
-                  const HeaderWidget(),
-                  // for our current temp ('current')
-                  CurrentWeatherWidget(
-                    weatherDataCurrent:
-                        controller.weatherData.value.getCurrentWeather(),
-                  ),
-                  addVerticalSpace(20),
-
-                  HourlyDataWidget(
-                      weatherDataHourly:
-                          controller.weatherData.value.getHourlyWeather()),
-                  DailyDataForecast(
-                    weatherDataDaily:
-                        controller.weatherData.value.getDailyWeather(),
-                  ),
-                  const Divider(),
-
-                  ComfortLevel(
+    return WillPopScope(
+      onWillPop: () async {
+        showExitFromAppDialog();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Obx(() => controller.checkLoading().isTrue
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/icons/clouds.png",
+                      height: height(context) * 0.08,
+                    ),
+                    const CircularProgressIndicator()
+                  ],
+                ))
+              : ListView(
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    addVerticalSpace(20),
+                    const HeaderWidget(),
+                    // for our current temp ('current')
+                    CurrentWeatherWidget(
                       weatherDataCurrent:
-                          controller.weatherData.value.getCurrentWeather())
-                ],
-              )),
+                          controller.weatherData.value.getCurrentWeather(),
+                    ),
+                    addVerticalSpace(20),
+
+                    HourlyDataWidget(
+                        weatherDataHourly:
+                            controller.weatherData.value.getHourlyWeather()),
+                    DailyDataForecast(
+                      weatherDataDaily:
+                          controller.weatherData.value.getDailyWeather(),
+                    ),
+                    const Divider(),
+
+                    ComfortLevel(
+                        weatherDataCurrent:
+                            controller.weatherData.value.getCurrentWeather())
+                  ],
+                )),
+        ),
       ),
     );
+  }
+
+  void showExitFromAppDialog() {
+    Get.dialog(AlertDialog(
+      title: const Text(
+        "Are you sure you want to Exit?",
+        style: TextStyle(fontSize: 24),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            SystemNavigator.pop();
+          },
+          child: const Text('Exit'),
+        ),
+      ],
+    ));
   }
 }
